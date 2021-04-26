@@ -37,13 +37,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> changeCategory(int id, String name) {
+    public Category changeCategory(int id, String name) {
         if (findById(id).isPresent()) {
             Category category = findById(id).get();
             category.setName(name);
-            return Optional.of(categoryRepository.save(category));
+            return categoryRepository.save(category);
         }
-        return Optional.empty();
+        return null;
     }
 
 

@@ -1,10 +1,9 @@
 package com.example.demorest.endpoint;
 
 import com.example.demorest.model.Category;
-import com.example.demorest.repository.CategoryRepository;
 import com.example.demorest.service.CategoryService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +15,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CategoryController {
 
- private final CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping("/all")
+    @Cacheable("category")
     public ResponseEntity<List<Category>> getAllCategory() {
         List<Category> allCategory = categoryService.getAllCategory();
         return ResponseEntity.ok(allCategory);
@@ -53,7 +53,7 @@ public class CategoryController {
     public ResponseEntity<Category> changeCategory(@RequestParam Integer id, @RequestParam String name) {
         Optional<Category> categoryById = categoryService.findById(id);
         if (categoryById.isPresent()) {
-         categoryService.changeCategory(id,name);
+            return ResponseEntity.ok(categoryService.changeCategory(id, name));
         }
         return ResponseEntity.notFound().build();
     }

@@ -15,7 +15,7 @@ public interface CategoryService {
 
     void deleteCategory(int id);
 
-    Optional<Category> changeCategory(int id,String name);
+    Category changeCategory(int id,String name);
 
 
 }

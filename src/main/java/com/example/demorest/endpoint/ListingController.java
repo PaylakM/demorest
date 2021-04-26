@@ -23,13 +23,13 @@ public class ListingController {
     }
 
     @GetMapping("/byUser/{email}")
-    public ResponseEntity<List<Listing>> getByUserEmail(@PathVariable String email) {
+    public ResponseEntity<List<Listing>> getByUserEmail(@PathVariable("email") String email) {
         List<Listing> byUserEmail = listingService.getByUserEmail(email);
         return ResponseEntity.ok(byUserEmail);
     }
 
     @GetMapping("/byCategory/{categoryId}")
-    public ResponseEntity<Listing> getListingByCategory(@PathVariable int categoryId) {
+    public ResponseEntity<Listing> getListingByCategory(@PathVariable("categoryId") int categoryId) {
         Optional<Listing> byCategoryId = listingService.getListingByCategory(categoryId);
         if (byCategoryId.isPresent()) {
             return ResponseEntity.ok(byCategoryId.get());
@@ -38,8 +38,9 @@ public class ListingController {
 
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<Listing> getListingById(@PathVariable int id) {
+    public ResponseEntity<Listing> getListingById(@PathVariable("id") int id) {
         Optional<Listing> byIdListing = listingService.findById(id);
         if (byIdListing.isPresent()) {
             return ResponseEntity.ok(byIdListing.get());
@@ -53,10 +54,10 @@ public class ListingController {
     }
 
     @PutMapping
-    public ResponseEntity<?> changeListing(@RequestParam int id, @RequestBody Listing listing) {
-        Optional<Listing> byIdListing = listingService.findById(id);
+    public ResponseEntity<Listing> changeListing(@RequestParam("id") int id, @RequestBody Listing listing) {
+        Optional<Listing> byIdListing = listingService.changeListing(id, listing);
         if (byIdListing.isPresent()) {
-            ResponseEntity.ok(listingService.changeListing(byIdListing.get(), listing));
+            return ResponseEntity.ok(byIdListing.get());
         }
         return ResponseEntity.notFound().build();
 

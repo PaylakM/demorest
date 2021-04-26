@@ -21,7 +21,7 @@ public class ListingServiceImpl implements ListingService {
 
     @Override
     public List<Listing> getByUserEmail(String email) {
-        return listingRepository.findByUser_Email(email);
+        return listingRepository.findByUserEmail(email);
     }
 
     @Override
@@ -40,13 +40,20 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
-    public Listing changeListing(Listing listing, Listing changeListing) {
-        listing.setTitle(changeListing.getTitle());
-        listing.setDescription(changeListing.getDescription());
-        listing.setPrice(changeListing.getPrice());
-        listing.setUser(changeListing.getUser());
-        listing.setCategory(changeListing.getCategory());
-        return listing;
+    public Optional<Listing> changeListing(int id, Listing changeListing) {
+        Optional<Listing> byId = findById(id);
+        if (byId.isPresent()) {
+            Listing listing = byId.get();
+            listing.setTitle(changeListing.getTitle());
+            listing.setDescription(changeListing.getDescription());
+            listing.setPrice(changeListing.getPrice());
+            listing.setUser(changeListing.getUser());
+            listing.setCategory(changeListing.getCategory());
+            listingRepository.save(listing);
+            return Optional.of(listing);
+        }
+
+        return Optional.empty();
     }
 
     @Override

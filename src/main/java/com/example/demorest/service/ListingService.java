@@ -17,7 +17,7 @@ public interface ListingService {
 
     Listing addListing(Listing listing);
 
-    Listing changeListing(Listing listing, Listing changeListing);
+    Optional<Listing> changeListing(int id, Listing changeListing);
 
     void deleteListingById(int id);
 
